@@ -1,10 +1,12 @@
 package com.main;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map.Entry;
+import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -12,25 +14,45 @@ import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.ICombinatoricsVector;
 
-public class NaiveBaselineAlgo {
+public class NaiveBaselineAlgoDB {
+	
+	static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
+	static final String DB_URL = "jdbc:oracle:thin:@ora.csc.ncsu.edu:1521:orcl";
+	
+	static String USER = "";
+	static String PASS = "";
 	
 	ArrayList<ArrayList<Integer>> setCoverList = new ArrayList<ArrayList<Integer>>();
 	
 	TreeSet<Integer> ts = new TreeSet<Integer>();
 	int ans = 0;
 	
-	private int baselineAlgo(String fileName)
+	private int baselineAlgo()
 	{
 		long startTime = System.currentTimeMillis();
-		System.out.println("For "+fileName);
+		
+		String sql = "";
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		String s = "";
+		
+		try {
+			// STEP 2: Register JDBC driver
+			Class.forName("oracle.jdbc.driver.OracleDriver");
 
-		try
-		{
-			BufferedReader br = new BufferedReader(new FileReader(new File(fileName)));
-			String s;
+			// STEP 3: Open a connection
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			// STEP 4: Execute a query
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 			
-			while((s=br.readLine())!=null)
+			sql = "SELECT INPUT FROM SETCOVER";
+			rs = stmt.executeQuery(sql);
+			while (rs.next())
 			{
+				s = rs.getString("input");
 				if(s.length()>0)
 				{
 					String st[] = s.split(" ");
@@ -43,12 +65,13 @@ public class NaiveBaselineAlgo {
 
 					setCoverList.add(a);
 				}
+				
 			}
+		} catch (Exception e1) {
+			System.out.println("Invalid credentials!");
+			return -1;
 		}
-		catch(Exception e)
-		{
-			
-		}
+		
 		System.out.println(setCoverList.size()+" rows...");
 		ArrayList<Integer> as = new ArrayList<Integer>(ts);
 		TreeMap<Integer, ArrayList<Integer>> tm = new TreeMap<Integer, ArrayList<Integer>>();
@@ -91,7 +114,19 @@ public class NaiveBaselineAlgo {
 	
 	
 	public static void main(String[] args) {
-		//System.out.println(new CopyOfBaselineAlgo().Greedy(args[0]));
-		System.out.println(new NaiveBaselineAlgo().baselineAlgo("input2.txt"));
+		
+		Scanner reader = new Scanner(System.in);
+		System.out.println("\nEnter the username for connecting to database:");
+		USER = reader.nextLine();
+		System.out.println("Enter the password:");
+		PASS = reader.nextLine();
+		
+		NaiveBaselineAlgoDB algo = new NaiveBaselineAlgoDB();
+		int result = algo.baselineAlgo();
+		if(result != -1)
+			System.out.println("The minimum number of sets required is : "+result);
+		else
+			System.out.println("Some problem while executing!");
+	
 	}
 }
