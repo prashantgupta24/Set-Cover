@@ -114,6 +114,8 @@ public class NaiveBaselineAlgoDB {
 	
 	
 	public static void main(String[] args) {
+	
+		System.out.println("NAIVE BASELINE ALGORITHM\n\n");
 		
 		Scanner reader = new Scanner(System.in);
 		System.out.println("\nEnter the username for connecting to database:");
@@ -123,6 +125,7 @@ public class NaiveBaselineAlgoDB {
 		
 		NaiveBaselineAlgoDB algo = new NaiveBaselineAlgoDB();
 		int result = algo.baselineAlgo();
+		
 		if(result != -1)
 			System.out.println("The minimum number of sets required is : "+result);
 		else
