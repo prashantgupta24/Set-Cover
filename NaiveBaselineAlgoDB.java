@@ -19,10 +19,11 @@ public class NaiveBaselineAlgoDB {
 	static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@ora.csc.ncsu.edu:1521:orcl";
 	
-	static String USER = "";
-	static String PASS = "";
+	static String USER = "pgupta7";
+	static String PASS = "200063440";
 	
 	ArrayList<ArrayList<Integer>> setCoverList = new ArrayList<ArrayList<Integer>>();
+	static String finalAns = "";
 	
 	TreeSet<Integer> ts = new TreeSet<Integer>();
 	int ans = 0;
@@ -75,6 +76,7 @@ public class NaiveBaselineAlgoDB {
 		System.out.println(setCoverList.size()+" rows...");
 		ArrayList<Integer> as = new ArrayList<Integer>(ts);
 		TreeMap<Integer, ArrayList<Integer>> tm = new TreeMap<Integer, ArrayList<Integer>>();
+	
 		
 		ICombinatoricsVector<ArrayList<Integer>> initialVector = Factory.createVector(setCoverList);
 
@@ -93,17 +95,24 @@ public class NaiveBaselineAlgoDB {
 			}*/
 			for (ICombinatoricsVector<ArrayList<Integer>> combination : gen) {
 				ArrayList<Integer> a  = new ArrayList<Integer>();
-
-				for (int j = 0; j < i; j++) 
-					a.addAll(combination.getValue(j));
+				StringBuilder ans = new StringBuilder("");
+				for (int j = 0; j < i; j++) {
+					ArrayList<Integer> value = combination.getValue(j);
+					a.addAll(value);
+					ans.append((j+1)+". "+value.toString()+"\n");
+				}
 				
 				if(a.containsAll(as))
+				{
 					tm.put(i, a);
+					if(finalAns.equals(""))
+						finalAns = ans.toString();
+				}
 			}
 		}
 		
 		Entry<Integer, ArrayList<Integer>> setCoverAnswer = tm.pollFirstEntry();
-		System.out.println(setCoverAnswer.getValue());
+		//System.out.println(setCoverAnswer.getValue());
 		
 		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
@@ -117,19 +126,21 @@ public class NaiveBaselineAlgoDB {
 	
 		System.out.println("NAIVE BASELINE ALGORITHM\n\n");
 		
-		Scanner reader = new Scanner(System.in);
+		/*Scanner reader = new Scanner(System.in);
 		System.out.println("\nEnter the username for connecting to database:");
 		USER = reader.nextLine();
 		System.out.println("Enter the password:");
-		PASS = reader.nextLine();
+		PASS = reader.nextLine();*/
 		
 		NaiveBaselineAlgoDB algo = new NaiveBaselineAlgoDB();
 		int result = algo.baselineAlgo();
 		
 		if(result != -1)
-			System.out.println("The minimum number of sets required is : "+result);
+			System.out.println("The minimum number of sets required is : "+result+"\n");
 		else
 			System.out.println("Some problem while executing!");
+		
+		System.out.println(finalAns);
 	
 	}
 }
