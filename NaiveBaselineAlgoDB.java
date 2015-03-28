@@ -56,6 +56,7 @@ public class NaiveBaselineAlgoDB {
 				s = rs.getString("input");
 				if(s.length()>0)
 				{
+					System.out.println(s);
 					String st[] = s.split(" ");
 					ArrayList<Integer> a = new ArrayList<Integer>();
 
@@ -73,7 +74,7 @@ public class NaiveBaselineAlgoDB {
 			return -1;
 		}
 		
-		System.out.println(setCoverList.size()+" rows...");
+		System.out.println("\n"+setCoverList.size()+" rows...");
 		ArrayList<Integer> as = new ArrayList<Integer>(ts);
 		TreeMap<Integer, ArrayList<Integer>> tm = new TreeMap<Integer, ArrayList<Integer>>();
 	
