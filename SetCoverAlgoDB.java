@@ -15,8 +15,8 @@ public class SetCoverAlgoDB {
 	static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@ora.csc.ncsu.edu:1521:orcl";
 	
-	static String USER = "";
-	static String PASS = "";
+	static String USER = "pgupta7";
+	static String PASS = "200063440";
 	
 	
 	class mycomp implements Comparator<Integer>
@@ -59,6 +59,7 @@ public class SetCoverAlgoDB {
 				s = rs.getString("input");
 				if(s.length()>0)
 				{
+					System.out.println(s);
 					String st[] = s.split(" ");
 					ArrayList<Integer> a = new ArrayList<Integer>();
 
@@ -88,7 +89,8 @@ public class SetCoverAlgoDB {
 			System.out.println("Invalid credentials!");
 			return -1;
 		}
-		
+		System.out.println();
+		System.out.println();
 		ArrayList<Integer> chosen = new ArrayList<Integer>();
 		int ans = 0;
 		
@@ -142,7 +144,7 @@ public class SetCoverAlgoDB {
 		
 		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
-		System.out.println("Time for execution : "+totalTime/60000+"m and "+(totalTime%60000)/1000+"s");
+		System.out.println("\nTime for execution : "+totalTime/60000+"m and "+(totalTime%60000)/1000+"s");
 		
 		return ans;
 	}
@@ -165,11 +167,11 @@ public class SetCoverAlgoDB {
 		
 		System.out.println("SET COVER EFFICIENT ALGORITHM\n\n");
 		
-		Scanner reader = new Scanner(System.in);
+	/*	Scanner reader = new Scanner(System.in);
 		System.out.println("\nEnter the username for connecting to database:");
 		USER = reader.nextLine();
 		System.out.println("Enter the password:");
-		PASS = reader.nextLine();
+		PASS = reader.nextLine();*/
 		
 		SetCoverAlgoDB algo = new SetCoverAlgoDB();
 		int result = algo.runAlgo();
