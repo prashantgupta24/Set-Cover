@@ -54,6 +54,13 @@ public class SetCoverAlgoDB {
 			
 			sql = "SELECT INPUT FROM SETCOVER";
 			rs = stmt.executeQuery(sql);
+			
+			/**
+			 * Gathering all inputs according to K value sets. Since p=2, we will have such sets-
+			 *  4–7 : ABCDE, ABDFG
+				2–3 : AFG, BCG, GH, EH, CI, AFG
+				1   : A, E, I
+			 */
 			while (rs.next())
 			{
 				s = rs.getString("input");
@@ -93,6 +100,11 @@ public class SetCoverAlgoDB {
 		System.out.println();
 		ArrayList<Integer> chosen = new ArrayList<Integer>();
 		int ans = 0;
+		
+		/**
+		 * Processing each division one-by-one.
+		 * If any set has to be demoted, it is done in this function itself.
+		 */
 		
 		for (int k = setCover.firstKey(); k >= 0; k--) {
 			
@@ -149,6 +161,11 @@ public class SetCoverAlgoDB {
 		return ans;
 	}
 
+	/**
+	 * Fetching the K value for the size of the set.
+	 * @param n
+	 * @return
+	 */
 	int getKValue(int n)
 	{
 		int ans = 0;

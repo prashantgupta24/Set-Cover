@@ -51,6 +51,10 @@ public class NaiveBaselineAlgoDB {
 			
 			sql = "SELECT INPUT FROM SETCOVER";
 			rs = stmt.executeQuery(sql);
+			
+			/**
+			 * Adding all rows to an array for processing it later
+			 */
 			while (rs.next())
 			{
 				s = rs.getString("input");
@@ -70,6 +74,7 @@ public class NaiveBaselineAlgoDB {
 				
 			}
 		} catch (Exception e1) {
+			e1.printStackTrace();
 			System.out.println("Invalid credentials!");
 			return -1;
 		}
@@ -84,16 +89,16 @@ public class NaiveBaselineAlgoDB {
 		for (int i = 1; i <= setCoverList.size(); i++) 
 		{
 
-			// Create a simple combination generator to generate 3-combinations of the initial vector
+			/**
+			 *  Create a simple combination generator to generate i-combinations of the initial vector
+			 */
 			Generator<ArrayList<Integer>> gen = Factory.createSimpleCombinationGenerator(initialVector, i);
 
-			// Print all possible combinations
-			/*for (int j = 0; j < gen.getNumberOfGeneratedObjects(); j++) {
-
-				ICombinatoricsVector<ArrayList<Integer>> combination = gen.getOriginalVector();
-				ArrayList<Integer> value = combination.getValue(j);
-				System.out.println(value.toString());
-			}*/
+			/**
+			 * Process each combination, check whether it has all the datasets
+			 * If yes, add it to another set, for further processing
+			 */
+			
 			for (ICombinatoricsVector<ArrayList<Integer>> combination : gen) {
 				ArrayList<Integer> a  = new ArrayList<Integer>();
 				StringBuilder ans = new StringBuilder("");
@@ -112,8 +117,10 @@ public class NaiveBaselineAlgoDB {
 			}
 		}
 		
+		/**
+		 * Fetching the first entry which should be the least value in the size of the sets.
+		 */
 		Entry<Integer, ArrayList<Integer>> setCoverAnswer = tm.pollFirstEntry();
-		//System.out.println(setCoverAnswer.getValue());
 		
 		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
