@@ -64,8 +64,9 @@ public class SetCoverAlgoDB {
 			while (rs.next())
 			{
 				s = rs.getString("input");
-				if(s.length()>0)
+				if(s!=null && s.length()>0)
 				{
+					s = s.replaceAll(",", "");
 					System.out.println(s);
 					String st[] = s.split(" ");
 					ArrayList<Integer> a = new ArrayList<Integer>();
@@ -93,6 +94,7 @@ public class SetCoverAlgoDB {
 				
 			}
 		} catch (Exception e1) {
+			e1.printStackTrace();
 			System.out.println("Invalid credentials!");
 			return -1;
 		}
@@ -113,12 +115,13 @@ public class SetCoverAlgoDB {
 			ArrayList<ArrayList<Integer>> aList = setCover.get(k);
 			for (int i = 0; i < aList.size(); i++) {
 				ArrayList<Integer> next = aList.get(i);
+				ArrayList<Integer> nextCopy = new ArrayList<Integer>(next);
 				next.removeAll(chosen);
 				if(next.size() >= Math.pow(p, k))
 				{
 					chosen.addAll(next);
 					ans++;
-					System.out.println(ans+". "+next);
+					System.out.println(ans+". "+nextCopy);
 				}
 				else
 					if(next.size()!=0)
