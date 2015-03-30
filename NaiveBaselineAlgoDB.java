@@ -60,7 +60,6 @@ public class NaiveBaselineAlgoDB {
 				s = rs.getString("input");
 				if(s!=null && s.length()>0)
 				{
-					s = s.replaceAll(",", "");
 					System.out.println(s);
 					String st[] = s.split(" ");
 					ArrayList<Integer> a = new ArrayList<Integer>();
